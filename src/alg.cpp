@@ -65,9 +65,9 @@ class TPQueue {
   }
   bool isFull() const  {
     return count == size;
-  };
+  }
   struct SYM {
   char ch;
   int  prior;
-};
+  }
 #endif // INCLUDE_TPQUEUE_H_
