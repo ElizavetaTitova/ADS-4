@@ -5,78 +5,69 @@
 
 template<typename T>
 class TPQueue {
-  // Сюда помещается описание структуры "Очередь с приоритетами"
- private:
-    T* arr;
-    int size;
-    int begin, end;
-    int count;
+  private:
+ T *arr;
+  int size;
+  int begin,
+    end;
+  int count;
  public:
-    TPQueue();
-    ~TPQueue();
-    void push(const T&);
-    T pop();
-    T get() const;
-    bool isFull() const;
-    bool isEmpty() const;
- };
-
-template<typename T>
-TPQueue<T>::TPQueue() :
+  TPQueue():
     size(100),
     begin(0), end(0), count(0) {
     arr = new T[size + 1];
-}
-template<typename T>
-TPQueue<T>::~TPQueue() {
+  }
+  ~TPQueue() {
     delete[] arr;
-}
+  }
+  void push(const T &);
+  T pop();
+  T get() const;
+  bool isEmpty() const;
+  bool isFull() const;
+};
 template<typename T>
-void TPQueue<T>::push(const T& item) {
+void TPQueue<T>::push(const T & item) {
   assert(count < size);
-  if (count != 0) {
-    for (int i = end - 1; i >= begin; i--) {
-        if (arr[i].prior >= item.prior) {
-          arr[i + 1] = item;
-          break;
-        }
-        if (arr[i].prior < item.prior) {
-          arr[i + 1] = arr[i];
-        }
-        if (begin == i) {
+  if (end != 0) {
+    for (int i = end - 1; i > -1; --i) {
+      if (arr[i].prior >= item.prior) {
+        arr[i + 1] = item;
+        continue;
+      } else {
+        arr[i + 1] = arr[i];
+        if (i == 0)
           arr[i] = item;
-        }
+        continue;
+      }
     }
   } else {
-     arr[begin] = item;
+    arr[begin] = item;
   }
-  end++;
   count++;
-  if (end > size) {
-    end -= size + 1;
-  }
+  end++;
 }
 template<typename T>
-T TPQueue<T>::pop() {
-    assert(count > 0);
-    T item = arr[begin++];
-    count--;
-    if (begin > size)
-        begin -= size + 1;
-    return item;
-}
-template<typename T>
-T TPQueue<T>::get() const {
-    assert(count > 0);
-    return arr[begin];
+bool TPQueue<T>::isEmpty() const {
+  return count == 0;
 }
 template<typename T>
 bool TPQueue<T>::isFull() const {
   return count == size;
 }
 template<typename T>
-bool TPQueue<T>::isEmpty() const {
-  return count == 0;
+T TPQueue<T>::pop() {
+  assert(count > 0);
+  T item = arr[begin++];
+  count--;
+  if (begin > size)
+    begin -= size + 1;
+  return item;
+}
+template<typename T>
+T TPQueue<T>::get() const {
+  assert(count > 0);
+  return arr[begin];
 }
 struct SYM {
   char ch;
